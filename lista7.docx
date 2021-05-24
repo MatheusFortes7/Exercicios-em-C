@@ -1,0 +1,185 @@
+Lista 7 - Files
+
+Exercicio 1-
+
+#include<stdlib.h>
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+
+int main(){
+char arq1[20], arq2[20];
+char linha1[100], linha2[100];
+
+    printf("Entre com o nome do primeiro arquivo: ");
+    scanf("%s", arq1);
+    printf("Entre como o nome do segundo arquivo: ");
+    scanf("%s", arq2);
+
+    FILE *fp1 = fopen(arq1,"r");
+    FILE *fp2 = fopen(arq2,"r");
+//erro na hr de abrir o arquivo
+    if ((fp1 == NULL) || (fp2==NULL)){
+        printf("Falha ao encontrar o arquivo");
+        return -1;
+    }
+
+    FILE *arq3 = fopen("Resultado.txt", "w");
+
+    fgets(linha1, 100, fp1);
+    fgets(linha2,100, fp2);
+    while (!feof(fp1) && !feof(fp2)){
+        if(strcmp(linha1, linha2) < 0){
+            fputs(linha1, arq3);
+            fgets(linha1, 100, fp1);
+        } else {
+            fputs(linha2, arq3);
+            fgets(linha2, 100, fp2);
+        }
+    }
+    
+    if(feof(fp1)){
+        while (!feof(fp2)){
+            fputs(linha2, arq3);
+            fgets(linha2, 100, fp2);
+        }
+    }
+
+    if(feof(fp2)){
+        while (!feof(fp1)){
+            fputs(linha1, arq3);
+            fgets(linha1, 100, fp1);
+        }
+    }
+
+    fclose(fp1);
+    fclose(fp2);
+    fclose(arq3);
+return 0;
+}
+
+Exercicio 2-
+
+#include<stdlib.h>
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+
+int main(){
+char linha[50];
+int nmrpalavras;
+
+printf("teste");
+
+FILE *fp = fopen("teste1.txt", "r");
+
+if(fp == NULL){
+        printf("Falha ao encontrar o arquivo");
+        return -1;
+    }
+
+while(!feof(fp)){
+    fgets(linha, 50, fp);
+    char *cont = strtok(linha," ,.:;?\n\r\t");
+    while (cont != NULL){
+        nmrpalavras++;
+        cont = strtok(linha," ,.;:?\n\r\t");
+    }   
+}
+fclose(fp);
+printf("O arquivo tem %d palavras.", nmrpalavras);
+
+return 0;
+}
+
+Exercicio 3-
+
+#include<stdlib.h>
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+
+int main(){
+char arq[20];
+int carac=0;
+
+printf("Entre com o nome do arquivo desejado: ");
+scanf("%s", arq);
+
+FILE *fp = fopen(arq, "r");
+
+if(fp == NULL){
+        printf("Falha ao encontrar o arquivo");
+        return -1;
+    }
+
+while(getc(fp) != EOF){
+    carac++;
+}
+
+printf("o arquivo tem %d caracteres.", carac);
+fclose(fp);
+return 0;
+}
+
+Exercicio 4-
+
+#include<stdlib.h>
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+
+int main(){
+char og[20];
+char z[500];
+
+printf("Entre com o arquivo que deve ser duplicado: ");
+scanf("%s", og);
+
+FILE *fp = fopen(og,"r");
+
+if(fp == NULL){
+        printf("Falha ao encontrar o arquivo");
+        return -1;
+    }
+
+FILE *fp2 = fopen("Copia.txt", "w");
+
+while (fgets(z,500,fp) != NULL){
+    fputs(z,fp2);
+}
+
+
+fclose(fp);
+fclose(fp2);
+return 0;
+}
+
+Exercicio 5-
+
+#include<stdlib.h>
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+
+int main(){
+float cont;
+float n1;
+float maior=0, menor=1000, media=0;
+FILE *fp = fopen("numeros.txt", "r");
+
+while(!feof(fp)){
+    fscanf(fp, "%f\n ", &n1); 
+    if (n1> maior)
+    maior = n1;
+    if(n1<menor)
+    menor = n1;
+    media = media + n1;
+    cont++;
+}
+media = media/cont;
+printf("O maior numero e: %g\nO menor numero e: %g\nE a media e: %g", maior, menor, media);
+
+fclose(fp);
+return 0;
+}
